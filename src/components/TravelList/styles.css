@@ -1,0 +1,19 @@
+.travel-list {
+	width: min(100%, 460px);
+	margin: 1.5rem auto;
+	padding: 1.25rem;
+	display: grid;
+	gap: 0.9rem;
+	border-radius: 14px;
+	border: 1px solid #bfdbfe;
+	background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+	box-shadow: 0 10px 26px rgba(15, 23, 42, 0.08);
+}
+
+.travel-card {
+	padding: 1rem;
+	border-radius: 10px;
+	border: 1px solid #e5e7eb;
+	background-color: #ffffff;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
