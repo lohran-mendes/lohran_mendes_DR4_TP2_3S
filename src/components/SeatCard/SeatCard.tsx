@@ -1,7 +1,7 @@
 import "./styles.css";
 
 type SeatCardProps = {
-  seatNumber: string;
+  seatNumber: number;
   status: 'disponivel' | 'reservado';
 };
 
