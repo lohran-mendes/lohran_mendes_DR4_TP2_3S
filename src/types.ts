@@ -7,3 +7,9 @@ export interface Passagem {
   data: Date;
   status: 'confirmada' | 'pendente' |  'cancelada';
 }
+
+export interface DadosPassagem {
+  passageiro: string;
+  assento: number;
+  destino: string;
+};

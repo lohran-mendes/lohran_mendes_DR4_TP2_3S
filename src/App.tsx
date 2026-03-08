@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./App.css";
 
 import { Button, Header, SeatCard, TicketForm, TravelList } from "./components";
-import type { Passagem } from "./types";
+import type { DadosPassagem, Passagem } from "./types";
 
 const mockPassagens: Passagem[] = [
   {
@@ -31,12 +31,28 @@ const mockPassagens: Passagem[] = [
     destino: "Porto Alegre",
     data: new Date("2024-09-10"),
     status: "pendente",
-  }
+  },
 ];
 
 function App() {
   const [passagens, setPassagens] = useState<Passagem[]>(mockPassagens);
 
+  const addPassagem = (dadosPassagem: DadosPassagem) => {
+    setPassagens((prevPassagens) => [
+      ...prevPassagens,
+      {
+        id: prevPassagens.length + 1,
+        passageiro: dadosPassagem.passageiro,
+        assento: dadosPassagem.assento,
+        destino: dadosPassagem.destino,
+        origem: "São Paulo", // Você pode ajustar conforme necessário
+        data: new Date(),
+        status: "pendente",
+      },
+    ]);
+
+    console.log("Dados da nova passagem:", dadosPassagem);
+  };
 
   return (
     <>
@@ -47,7 +63,7 @@ function App() {
       <Button label="Clique aqui" variant="success" />
       <Button label="Clique aqui" variant="warning" />
       <Button label="Clique aqui" variant="danger" />
-      <TicketForm/>
+      <TicketForm addNewPassagem={addPassagem} />
       <TravelList passagens={passagens} />
     </>
   );

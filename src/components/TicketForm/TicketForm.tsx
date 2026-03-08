@@ -1,22 +1,39 @@
 import { useState, type SubmitEvent } from "react";
-import "./styles.css";
 
-export function TicketForm() {
+import "./styles.css";
+import type { DadosPassagem } from "../../types";
+
+type TicketFormProps = {
+  addNewPassagem: (dados: DadosPassagem) => void;
+};
+
+export function TicketForm({ addNewPassagem }: TicketFormProps) {
   const [passageiro, setPassageiro] = useState("");
-  const [assento, setAssento] = useState("");
+  const [assento, setAssento] = useState<number | "">("");
   const [destino, setDestino] = useState("");
 
-  const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: SubmitEvent<HTMLFormElement>): void => {
     event.preventDefault();
 
-    console.log("Formulário enviado!");
-    console.log("Passageiro:", passageiro);
-    console.log("Assento:", assento);
-    console.log("Destino:", destino);
+    if (assento === "") {
+      alert("Por favor, preencha o campo de assento.");
+      return;
+    }
+
+    const dadosPassagem: DadosPassagem = {
+      passageiro,
+      assento,
+      destino,
+    };
+
+    setAssento("");
+    setDestino("");
+    setPassageiro("");
+    addNewPassagem(dadosPassagem);
   };
 
   return (
-    <form className="ticket-form" onSubmit={handleSubmit}>
+    <form className="ticket-form" onSubmit={(e) => handleSubmit(e)}>
       <h2 className="ticket-form-title">Reserva de Assento</h2>
 
       <label className="ticket-form-field">
@@ -38,7 +55,7 @@ export function TicketForm() {
           min={0}
           max={40}
           value={assento}
-          onChange={(e) => setAssento(e.target.value)}
+          onChange={(e) => setAssento(Number(e.target.value))}
           placeholder="Ex: 17"
         />
       </label>
