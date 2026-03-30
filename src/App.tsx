@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 
-import { Button, Header, SeatCard, TicketForm, TravelList } from "./components";
+import { TicketForm, TravelList } from "./components";
 import type { DadosPassagem, Passagem } from "./types";
 import { BaseLayout } from "./layouts";
 
@@ -64,6 +64,7 @@ const mockPassagens: Passagem[] = [
 
 function App() {
   const [passagens, setPassagens] = useState<Passagem[]>(mockPassagens);
+  const [passagemDataForUpdate, setPassagemDataForUpdate] = useState<Passagem | null>(null);
 
   const addPassagem = (dadosPassagem: DadosPassagem) => {
     const isDuplicateAssento = passagens.some(
@@ -93,12 +94,21 @@ function App() {
     console.log("Dados da nova passagem:", dadosPassagem);
   };
 
+  const removePassagem = (id: number) => {
+    setPassagens((prevPassagens) => prevPassagens.filter((passagem) => passagem.id !== id));
+  };
+
+  const updatePassagem = (id: number) => {
+    setPassagemDataForUpdate(passagens.find((passagem) => passagem.id === id) || null); 
+    console.log("Passagem selecionada para atualização:", passagemDataForUpdate);
+  }
+
   return (
     <>
       <BaseLayout>
         <h1>Expresso Horizon - Reserva de Passagens</h1>
-        <TicketForm addNewPassagem={addPassagem} />
-        <TravelList passagens={passagens} />
+        <TicketForm addNewPassagem={addPassagem} passagemDataForUpdate={passagemDataForUpdate} />
+        <TravelList passagens={passagens} removePassagem={removePassagem} updatePassagem={updatePassagem} />
       </BaseLayout>
     </>
   );

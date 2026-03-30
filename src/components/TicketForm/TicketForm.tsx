@@ -1,16 +1,34 @@
-import { useState, type SubmitEvent } from "react";
+import { useEffect, useState, type SubmitEvent } from "react";
 
 import "./styles.css";
 import type { DadosPassagem } from "../../types";
 
 type TicketFormProps = {
   addNewPassagem: (dados: DadosPassagem) => void;
+  updatePassagem: (dados: DadosPassagem) => void;
+  passagemDataForUpdate?: DadosPassagem | null;
 };
 
-export function TicketForm({ addNewPassagem }: TicketFormProps) {
-  const [passageiro, setPassageiro] = useState("");
-  const [assento, setAssento] = useState<number | "">("");
-  const [destino, setDestino] = useState("");
+export function TicketForm({ addNewPassagem, updatePassagem, passagemDataForUpdate }: TicketFormProps) {
+  const [passageiro, setPassageiro] = useState(passagemDataForUpdate?.passageiro || "");
+  const [assento, setAssento] = useState<number | "">(passagemDataForUpdate?.assento || "");
+  const [destino, setDestino] = useState(passagemDataForUpdate?.destino || "");
+  const [buttonText, setButtonText] = useState("Reservar Assento");
+
+  useEffect(() => {
+    if (passagemDataForUpdate) {
+      setPassageiro(passagemDataForUpdate.passageiro);
+      setAssento(passagemDataForUpdate.assento);
+      setDestino(passagemDataForUpdate.destino);
+      setButtonText("Atualizar Passagem");
+    } else {
+      setPassageiro("");
+      setAssento("");
+      setDestino("");
+      setButtonText("Reservar Assento");
+    }
+
+  }, [passagemDataForUpdate]);
 
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>): void => {
     event.preventDefault();
@@ -29,7 +47,11 @@ export function TicketForm({ addNewPassagem }: TicketFormProps) {
     setAssento("");
     setDestino("");
     setPassageiro("");
-    addNewPassagem(dadosPassagem);
+    if (passagemDataForUpdate) {
+      updatePassagem(dadosPassagem);
+    } else {
+      addNewPassagem(dadosPassagem);
+    }
   };
 
   return (
@@ -72,7 +94,7 @@ export function TicketForm({ addNewPassagem }: TicketFormProps) {
       </label>
 
       <button className="ticket-form-button" type="submit">
-        Reservar Assento
+        {buttonText}
       </button>
     </form>
   );

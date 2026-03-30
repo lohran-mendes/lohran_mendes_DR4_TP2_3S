@@ -3,8 +3,22 @@ import "./styles.css";
 import type { Passagem } from "../../types";
 import { Button } from "../Button/Button";
 
-export function TravelList(props: { passagens: Passagem[] }) {
-  const { passagens } = props;
+type TravelListProps = {
+  passagens: Passagem[];
+  removePassagem: (id: number) => void;
+  updatePassagem: (id: number) => void;
+}
+
+export function TravelList(props: TravelListProps) {
+  const { passagens, removePassagem, updatePassagem } = props;
+
+  const onRemovePassagem = (id: number) => {
+    removePassagem(id);
+  }
+
+  const onUpdatePassagem = (id: number) => {
+    updatePassagem(id);
+  }
 
   return (
     <div className="travel-list">
@@ -19,8 +33,8 @@ export function TravelList(props: { passagens: Passagem[] }) {
             <p>Data: {passagem.data.toLocaleDateString()}</p>
             <p>Status: {passagem.status}</p>
             <div className="travel-card-actions">
-              <Button label="Cancelar" variant="danger" />
-              <Button label="Alterar" variant="warning" />
+              <Button label="Cancelar" variant="danger" onClick={() => onRemovePassagem(passagem.id)}/>
+              <Button label="Alterar" variant="warning" onClick={() => onUpdatePassagem(passagem.id)} />
             </div>
           </div>
         ))}

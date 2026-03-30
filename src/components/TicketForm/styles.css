@@ -70,7 +70,7 @@
 
 @media (max-width: 520px) {
 	.ticket-form {
-		margin: 1rem;
+		margin: 1rem auto;
 		padding: 1rem;
 	}
 }
